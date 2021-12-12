@@ -17,7 +17,7 @@ model User {
   fullname String
   phoneNumber String
   gender String
-  role String
+  role Role @default(USER)
   dob DateTime @db.Date
   address String
   identityNumber String
@@ -36,6 +36,8 @@ model Tour {
   maxPeople Int
   sold Int
   flight String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   destination Destination @relation(fields: [destinationId], references: [id])
   destinationId Int
   rate Rate?
@@ -46,6 +48,8 @@ model Plan {
   id Int @id @default(autoincrement())
   destination Destination @relation(fields: [destinationID], references: [id])
   destinationID Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   dayplans DayPlan[]
 }
 
@@ -54,6 +58,8 @@ model DayPlan {
   day Int
   title String
   desc String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   plan Plan @relation(fields: [planId], references: [id])
   planId Int
 }
@@ -70,7 +76,7 @@ model BookedTour {
 model Invoice {
   id Int @id @default(autoincrement())
   totalPrice Float
-  invoiceDate DateTime @db.Date
+  invoiceDate DateTime @default(now())
   bookedTour BookedTour @relation(fields: [bookedTourId], references: [id])
   bookedTourId Int
 }
@@ -78,7 +84,7 @@ model Invoice {
 model Rate {
   id Int @id @default(autoincrement())
   star Int
-  comment String
+  createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
   userId Int
   tour Tour @relation(fields: [tourId], references: [id])
@@ -90,6 +96,8 @@ model Destination {
   name String
   address String
   desc String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   tours Tour[]
   plans Plan[]
   images Image[]
@@ -114,4 +122,10 @@ model TourService {
   tourId Int
   service Service @relation(fields: [serviceId], references: [id])
   serviceId Int
+}
+
+enum Role {
+  USER
+  STAFF
+  MANAGER
 }
