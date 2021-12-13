@@ -1,0 +1,82 @@
+const { PrismaClient } = require('@prisma/client');
+const { destination } = new PrismaClient();
+
+class DestinationController {
+  /**
+   * [POST]
+   * /destinations
+   */
+  create(req, res, next) {
+    const newDestination = req.body;
+    destination.create({
+      data: newDestination
+    })
+      .then((destination) => res.json(destination))
+  }
+
+  /**
+   * [GET]
+   * /destinations/:id
+   */
+  show(req, res, next) {
+    destination.findFirst({
+      where: {
+        id: parseInt(req.params.id)
+      }
+    })
+      .then(destination => res.send(destination))
+  }
+
+  /**
+   * [GET]
+   * /destinations/
+   */
+  index(req, res, next) {
+    destination.findMany()
+      .then(destinations => res.send(destinations))
+  }
+
+  /**
+   * [GET]
+   * /destinations/edit/:id
+   */
+  edit(req, res, next) {
+    destination.findFirst({
+      where: {
+        id: parseInt(req.params.id)
+      }
+    })
+      .then(destination => res.send(destination))
+  }
+
+    /**
+   * [PATCH]
+   * /destinations/:id
+   */
+  update(req, res, next) {
+    const updatedDestination = req.body;
+
+    destination.update({
+      where: {
+        id: parseInt(req.params.id)
+      },
+      data: updatedDestination
+    })
+      .then(destination => res.send(destination))
+  }
+
+    /**
+   * [DELETE]
+   * /destinations/:id
+   */
+  delete(req, res, next) {
+    destination.delete({
+      where: {
+        id: parseInt(req.params.id)
+      }
+    })
+      .then(result => res.send(result))
+  }
+}
+
+module.exports = new DestinationController()

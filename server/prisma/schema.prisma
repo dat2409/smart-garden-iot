@@ -14,15 +14,13 @@ model User {
   id Int @id @unique @default(autoincrement())
   email String @unique
   password String
-  fullname String
+  fullName String
   phoneNumber String
   gender String
-  role Role @default(USER)
+  role Role @default(STAFF)
   dob DateTime @db.Date
   address String
   identityNumber String
-  bookedTours BookedTour[]
-  rate Rate?
 }
 
 model Tour {
@@ -30,72 +28,73 @@ model Tour {
   name String
   departure String
   departureTime DateTime
-  days Float
-  priec Float
-  desc String
+  days Int
+  price Float
+  desc String @db.LongText
   maxPeople Int
-  sold Int
+  sold Int @default(0)
   flight String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  destination Destination @relation(fields: [destinationId], references: [id])
-  destinationId Int
-  rate Rate?
-  tourservices TourService[]
+  destination Destination @relation(fields: [destinationName], references: [name])
+  destinationName String
+  plan Plan @relation(fields: [planName], references: [name])
+  planName String
+  services TourService[]
+  order Order?
 }
 
 model Plan {
   id Int @id @default(autoincrement())
-  destination Destination @relation(fields: [destinationID], references: [id])
-  destinationID Int
+  name String @unique
+  destination Destination @relation(fields: [destinationId], references: [id])
+  destinationId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   dayplans DayPlan[]
+  tour Tour?
 }
 
 model DayPlan {
   id Int @id @default(autoincrement())
   day Int
   title String
-  desc String
+  desc String @db.LongText
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   plan Plan @relation(fields: [planId], references: [id])
   planId Int
 }
 
-model BookedTour {
+model Order {
   id Int @id @unique @default(autoincrement())
-  num_of_people Int
-  isAccepted Boolean @default(false)
-  user User @relation(fields: [userId], references: [id])
-  userId Int
+  fullName String
+  email String
+  phoneNumber String
+  address String
+  note String @db.LongText
+  quantity Int
+  totalPrice Float
+  isDeposited Boolean @default(false)
+  tour Tour @relation(fields: [tourId], references: [id])
+  tourId Int
   invoice Invoice?
 }
 
 model Invoice {
   id Int @id @default(autoincrement())
-  totalPrice Float
-  invoiceDate DateTime @default(now())
-  bookedTour BookedTour @relation(fields: [bookedTourId], references: [id])
-  bookedTourId Int
-}
-
-model Rate {
-  id Int @id @default(autoincrement())
-  star Int
-  createdAt DateTime @default(now())
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-  tour Tour @relation(fields: [tourId], references: [id])
-  tourId Int
+  depositedAt DateTime @default(now())
+  paidAt DateTime @updatedAt
+  isPaid Boolean @default(false)
+  order Order @relation(fields: [orderId], references: [id])
+  orderId Int
 }
 
 model Destination {
   id Int @id @default(autoincrement())
-  name String
+  name String @unique
   address String
-  desc String
+  desc String @db.LongText
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   tours Tour[]
@@ -112,20 +111,20 @@ model Image {
 
 model Service {
   id Int @id @default(autoincrement())
-  name String
-  tourservices TourService[]
+  name String @unique
+  tours TourService[]
 }
 
 model TourService {
-  id Int @id @default(autoincrement())
   tour Tour @relation(fields: [tourId], references: [id])
   tourId Int
   service Service @relation(fields: [serviceId], references: [id])
   serviceId Int
+
+  @@id([tourId, serviceId])
 }
 
 enum Role {
-  USER
   STAFF
   MANAGER
 }

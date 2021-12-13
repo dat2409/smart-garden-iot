@@ -1,8 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const port = process.env.PORT || 3000;
-const route = require('./routes/index')
+const route = require('./routes');
+const multer = require('multer');
 
 const app = express();
 
@@ -14,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+app.use(cookieParser());
 
 route(app);
 app.listen(port, () => {
