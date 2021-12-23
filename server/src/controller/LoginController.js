@@ -3,10 +3,11 @@ const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const { user } = new PrismaClient();
 
+let loadedUser;
 class LoginController {
   /**
    * [POST]
-   * /login/create
+   * /login/
    */
   create(req, res, next) {
     user.findUnique({
@@ -15,6 +16,7 @@ class LoginController {
       }
     })
       .then(user => {
+        loadedUser = user;
         if (user) {
           bcrypt.compare(req.body.password, user.password)
             .then(async function (result) {
@@ -36,6 +38,13 @@ class LoginController {
           res.status(404).send('User not found!')
         }
       })
+  }
+
+  me(req, res, auth) {
+    console.log("davao day");
+    res.status(200).json({
+      user: loadedUser
+    })
   }
 }
 
