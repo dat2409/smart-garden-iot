@@ -150,6 +150,7 @@ class TourController {
   /**
    * [PATCH]
    * /tours/:id
+   * Xem xét updateMany cho plan where tourId = param id
    */
   update(req, res, next) {
     const { name, departure, departureDay, departureHour, departureMinute, days, price, desc, maxPeople,

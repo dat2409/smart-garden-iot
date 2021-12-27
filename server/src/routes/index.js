@@ -11,7 +11,7 @@ const auth = require('../middleware/auth');
 function route(app) {
   app.use('/user', userRouter);
   app.use('/login', loginRouter);
-  app.use('/destinations', [auth.requireAuth, auth.isManager], destinationRouter);
+  app.use('/destinations', destinationRouter);
   app.use('/services', [auth.requireAuth, auth.isManager], serviceRouter);
   app.use('/plans', [auth.requireAuth, auth.isManager], planRouter);
   app.use('/tours', [auth.requireAuth, auth.isManager], tourRouter);

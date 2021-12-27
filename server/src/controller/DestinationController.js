@@ -1,18 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
-const { destination } = new PrismaClient();
+const { destination, image } = new PrismaClient();
+const { v4: uuidv4 } = require('uuid');
+let multer = require('multer');
 
 class DestinationController {
-  /**
-   * [POST]
-   * /destinations
-   */
-  create(req, res, next) {
-    const newDestination = req.body;
-    destination.create({
-      data: newDestination
-    })
-      .then((destination) => res.json(destination))
-  }
 
   /**
    * [GET]
@@ -22,6 +13,13 @@ class DestinationController {
     destination.findFirst({
       where: {
         id: parseInt(req.params.id)
+      },
+      select: {
+        images: {
+          select: {
+            url: true
+          }
+        }
       }
     })
       .then(destination => res.send(destination))
@@ -32,7 +30,15 @@ class DestinationController {
    * /destinations/
    */
   index(req, res, next) {
-    destination.findMany()
+    destination.findMany({
+      include: {
+        images: {
+          select: {
+            url: true
+          }
+        }
+      }
+    })
       .then(destinations => res.send(destinations))
   }
 
@@ -44,39 +50,55 @@ class DestinationController {
     destination.findFirst({
       where: {
         id: parseInt(req.params.id)
+      },
+      select: {
+        images: {
+          select: {
+            url: true
+          }
+        }
       }
     })
       .then(destination => res.send(destination))
   }
 
-    /**
-   * [PATCH]
-   * /destinations/:id
-   */
-  update(req, res, next) {
-    const updatedDestination = req.body;
+  /**
+ * [PATCH]
+ * /destinations/:id
+ */
+  // update(req, res, next) {
+  //   const updatedDestination = req.body;
 
-    destination.update({
-      where: {
-        id: parseInt(req.params.id)
-      },
-      data: updatedDestination
-    })
-      .then(destination => res.send(destination))
-  }
+  //   destination.update({
+  //     where: {
+  //       id: parseInt(req.params.id)
+  //     },
+  //     data: updatedDestination
+  //   })
+  //     .then(destination => res.send(destination))
+  // }
 
-    /**
+  /**
    * [DELETE]
    * /destinations/:id
    */
-  delete(req, res, next) {
-    destination.delete({
-      where: {
-        id: parseInt(req.params.id)
-      }
-    })
-      .then(result => res.send(result))
-  }
+  // delete(req, res, next) {
+  //   destination.update({
+  //     where: {
+  //       id: parseInt(req.params.id),
+  //     },
+  //     data: {
+  //       images: {
+  //         deleteMany: {}
+  //       }
+  //     }
+  //   })
+  //     .then(() => destination.delete({
+  //       where: {
+  //         id: parseInt(req.params.id)
+  //       }
+  //     })
+  //       .then(result => res.send(result)))
+  // }
 }
-
 module.exports = new DestinationController()

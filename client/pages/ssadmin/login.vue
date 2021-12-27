@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <notification :message="error" v-if="error" />
     <v-card class="ma-auto" width="450">
       <v-card-title class="d-flex align-center justify-center py-7">
         <h2 class="heading mainstream--text">SetSail</h2>
