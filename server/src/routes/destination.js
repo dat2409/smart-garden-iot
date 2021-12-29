@@ -11,7 +11,7 @@ router.get('/:id', destinationController.show);
 router.get('/', destinationController.index);
 router.get('/edit/:id', destinationController.edit);
 // router.patch('/:id', destinationController.update);
-// router.delete('/:id', destinationController.delete);
+router.delete('/:id', destinationController.delete);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

@@ -39,7 +39,7 @@ class DestinationController {
         }
       }
     })
-      .then(destinations => res.send(destinations))
+      .then(destinations => res.json(destinations))
   }
 
   /**
@@ -82,23 +82,13 @@ class DestinationController {
    * [DELETE]
    * /destinations/:id
    */
-  // delete(req, res, next) {
-  //   destination.update({
-  //     where: {
-  //       id: parseInt(req.params.id),
-  //     },
-  //     data: {
-  //       images: {
-  //         deleteMany: {}
-  //       }
-  //     }
-  //   })
-  //     .then(() => destination.delete({
-  //       where: {
-  //         id: parseInt(req.params.id)
-  //       }
-  //     })
-  //       .then(result => res.send(result)))
-  // }
+  delete(req, res, next) {
+    destination.delete({
+      where: {
+        id: parseInt(req.params.id)
+      }
+    })
+      .then(result => res.send(result))
+  }
 }
 module.exports = new DestinationController()

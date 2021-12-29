@@ -93,7 +93,7 @@ export default {
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
-          adminBackground: colors.grey.lighten5,
+          adminBackground: colors.deepPurple.lighten5,
           mainstream: colors.deepPurple.darken1
         }
       }

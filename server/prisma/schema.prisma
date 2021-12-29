@@ -36,9 +36,9 @@ model Tour {
   flight String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  destination Destination @relation(fields: [destinationName], references: [name])
+  destination Destination @relation(fields: [destinationName], references: [name], onDelete: Cascade)
   destinationName String
-  plan Plan @relation(fields: [planName], references: [name])
+  plan Plan @relation(fields: [planName], references: [name], onDelete: Cascade)
   planName String
   services TourService[]
   order Order?
@@ -47,7 +47,7 @@ model Tour {
 model Plan {
   id Int @id @default(autoincrement())
   name String @unique
-  destination Destination @relation(fields: [destinationId], references: [id])
+  destination Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
   destinationId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -62,7 +62,7 @@ model DayPlan {
   desc String @db.LongText
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  plan Plan @relation(fields: [planId], references: [id])
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
   planId Int
 }
 
@@ -76,7 +76,7 @@ model Order {
   quantity Int
   totalPrice Float
   isDeposited Boolean @default(false)
-  tour Tour @relation(fields: [tourId], references: [id])
+  tour Tour @relation(fields: [tourId], references: [id], onDelete: Cascade)
   tourId Int
   invoice Invoice?
 }
@@ -86,7 +86,7 @@ model Invoice {
   depositedAt DateTime @default(now())
   paidAt DateTime @updatedAt
   isPaid Boolean @default(false)
-  order Order @relation(fields: [orderId], references: [id])
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId Int
 }
 
@@ -105,7 +105,7 @@ model Destination {
 model Image {
   id Int @id @default(autoincrement())
   url String
-  destination Destination @relation(fields: [destinationID], references: [id])
+  destination Destination @relation(fields: [destinationID], references: [id], onDelete: Cascade)
   destinationID Int
 }
 
@@ -116,9 +116,9 @@ model Service {
 }
 
 model TourService {
-  tour Tour @relation(fields: [tourId], references: [id])
+  tour Tour @relation(fields: [tourId], references: [id], onDelete: Cascade)
   tourId Int
-  service Service @relation(fields: [serviceId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId Int
 
   @@id([tourId, serviceId])
