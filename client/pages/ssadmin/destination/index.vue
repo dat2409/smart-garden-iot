@@ -1,9 +1,16 @@
 <template>
-  <v-data-table :headers="headers" :items="destinations" class="elevation-1">
+  <v-data-table :headers="headers" :items="destinations" class="elevation-1" :search="search">
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title class="text-uppercase">Destinations</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search by name or address"
+          single-line
+          hide-details
+        ></v-text-field>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" width="900">
           <template v-slot:activator="{ on, attrs }">
@@ -53,9 +60,10 @@
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="text-h5"
-              >Are you sure you want to delete this item?</v-card-title
-            >
+            <v-card-title>
+              <h3 class="text-center">Are you sure you want to delete this destination?</h3>
+              <p class="red--text">If you delete this destination, you also delete the tour to this place and all relations!</p>
+              </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete"
@@ -88,7 +96,7 @@ export default {
           value: "name",
         },
         { text: "Address", value: "address" },
-        { text: "Description", value: "desc", width: "500" },
+        { text: "Description", value: "desc", width: "50%", filterable: false },
         { text: "Images", value: "name" },
         { text: "Actions", value: "actions", sortable: false },
       ],
@@ -100,9 +108,11 @@ export default {
       desc: "",
       dialogDelete: false,
       destinationDelete: null,
+      search: "",
+
     };
   },
-  mounted() {
+  fetch() {
     try {
       this.$axios
         .get("/destinations")
@@ -124,8 +134,8 @@ export default {
       formData.append("address", this.address);
       formData.append("desc", this.desc);
 
-      this.$axios.post("/destinations", formData, {}).then((destination) => {
-        this.destinations.push(destination);
+      this.$axios.post("/destinations", formData, {}).then(() => {
+        this.$fetch();
         this.close();
       });
     },
@@ -139,14 +149,10 @@ export default {
       console.log(item);
     },
     deleteItem() {
-      console.log("start dl");
       this.$axios
         .delete(`/destinations/${this.destinationDelete.id}`)
-        .then((destination) => {
-          const destinationId = this.destinations.findIndex(
-            (d) => d.id === destination.id
-          );
-          this.destinations.splice(destinationId, 1);
+        .then(() => {
+          this.$fetch();
           this.closeDelete();
         });
     },
