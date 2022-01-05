@@ -22,7 +22,6 @@ CREATE TABLE `Tour` (
     `name` VARCHAR(191) NOT NULL,
     `departure` VARCHAR(191) NOT NULL,
     `departureTime` DATETIME(3) NOT NULL,
-    `days` INTEGER NOT NULL,
     `price` DOUBLE NOT NULL,
     `desc` LONGTEXT NOT NULL,
     `maxPeople` INTEGER NOT NULL,
@@ -30,10 +29,8 @@ CREATE TABLE `Tour` (
     `flight` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `destinationName` VARCHAR(191) NOT NULL,
-    `planName` VARCHAR(191) NOT NULL,
+    `planId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Tour_planName_key`(`planName`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -45,7 +42,6 @@ CREATE TABLE `Plan` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Plan_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -76,7 +72,6 @@ CREATE TABLE `Order` (
     `tourId` INTEGER NOT NULL,
 
     UNIQUE INDEX `Order_id_key`(`id`),
-    UNIQUE INDEX `Order_tourId_key`(`tourId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -132,10 +127,7 @@ CREATE TABLE `TourService` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Tour` ADD CONSTRAINT `Tour_destinationName_fkey` FOREIGN KEY (`destinationName`) REFERENCES `Destination`(`name`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Tour` ADD CONSTRAINT `Tour_planName_fkey` FOREIGN KEY (`planName`) REFERENCES `Plan`(`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Tour` ADD CONSTRAINT `Tour_planId_fkey` FOREIGN KEY (`planId`) REFERENCES `Plan`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Plan` ADD CONSTRAINT `Plan_destinationId_fkey` FOREIGN KEY (`destinationId`) REFERENCES `Destination`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

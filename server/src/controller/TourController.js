@@ -8,8 +8,10 @@ class TourController {
    * /tours/
    */
   create(req, res, next) {
-    const { name, departure, departureDay, departureHour, departureMinute, days, price, desc, maxPeople,
-      flight, destinationName, planName, services } = req.body;
+    const { name, departure, departureDay, departureTimeReq, price, desc, maxPeople,
+      flight, planId, services } = req.body;
+
+    const departureTime = new Date(`${departureDay} ${departureTimeReq}`)
 
       const listServices = [];
       for (var i = 0; i < services.length; i++) {
@@ -26,14 +28,12 @@ class TourController {
       data: {
         name,
         departure,
-        departureTime: set(new Date(departureDay), { hours: departureHour, minutes: departureMinute }),
-        days,
+        departureTime,
         price,
         desc,
         maxPeople,
         flight,
-        destinationName,
-        planName,
+        planId,
         services: {
           create: listServices
         }
@@ -52,16 +52,10 @@ class TourController {
         id: parseInt(req.params.id)
       },
       include: {
-        destination: {
-          select: {
-            name: true,
-            address: true,
-            desc: true
-          }
-        },
         plan: {
-          select: {
-            name: true
+          include: {
+            dayplans: true,
+            destination: true
           }
         },
         services: {
@@ -85,13 +79,6 @@ class TourController {
   index(req, res, next) {
     tour.findMany({
       include: {
-        destination: {
-          select: {
-            name: true,
-            address: true,
-            desc: true
-          }
-        },
         plan: {
           select: {
             name: true
@@ -121,13 +108,6 @@ class TourController {
         id: parseInt(req.params.id)
       },
       include: {
-        destination: {
-          select: {
-            name: true,
-            address: true,
-            desc: true
-          }
-        },
         plan: {
           select: {
             name: true
@@ -153,8 +133,10 @@ class TourController {
    * Xem xét updateMany cho plan where tourId = param id
    */
   update(req, res, next) {
-    const { name, departure, departureDay, departureHour, departureMinute, days, price, desc, maxPeople,
-      flight, destinationName, planName, services } = req.body;
+    const { name, departure, departureDay, departureTimeReq, price, desc, maxPeople,
+      flight, planId, services } = req.body;
+
+    const departureTime = new Date(`${departureDay} ${departureTimeReq}`)
 
     const listServices = [];
     for (var i = 0; i < services.length; i++) {
@@ -180,14 +162,12 @@ class TourController {
           data: {
             name,
             departure,
-            departureTime: set(new Date(departureDay), { hours: departureHour, minutes: departureMinute }),
-            days,
+            departureTime,
             price,
             desc,
             maxPeople,
             flight,
-            destinationName,
-            planName,
+            planId,
             services: {
               create: listServices
             }
@@ -216,6 +196,13 @@ class TourController {
         })
           .then(tour => res.send(tour))
       })
+  }
+
+  test(req, res) {
+    const day = '2022-02-03';
+    const time = '08:30';
+    const datetime = new Date(`${day} ${time}`);
+    res.send(datetime)
   }
 }
 

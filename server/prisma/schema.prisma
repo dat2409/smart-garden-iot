@@ -28,7 +28,6 @@ model Tour {
   name String
   departure String
   departureTime DateTime
-  days Int
   price Float
   desc String @db.LongText
   maxPeople Int
@@ -36,23 +35,21 @@ model Tour {
   flight String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  destination Destination @relation(fields: [destinationName], references: [name], onDelete: Cascade)
-  destinationName String
-  plan Plan @relation(fields: [planName], references: [name], onDelete: Cascade)
-  planName String
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId Int
   services TourService[]
-  order Order?
+  orders Order[]
 }
 
 model Plan {
   id Int @id @default(autoincrement())
-  name String @unique
+  name String
   destination Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
   destinationId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   dayplans DayPlan[]
-  tour Tour?
+  tours Tour[]
 }
 
 model DayPlan {
@@ -97,7 +94,6 @@ model Destination {
   desc String @db.LongText
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  tours Tour[]
   plans Plan[]
   images Image[]
 }

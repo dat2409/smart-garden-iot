@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const { invoice, tour, order } = new PrismaClient();
+const nodemailer = require('nodemailer');
 
 class BookingManagerController {
   /**
@@ -11,17 +12,11 @@ class BookingManagerController {
       where: {
         id: parseInt(req.params.orderId)
       },
-      select: {
-        tour: {
-          select: {
-            sold: true
-          }
-        },
-        tourId: true,
-        quantity: true
+      include: {
+        tour: true,
       }
     })
-    console.log(thisOrder)
+
 
     const sold = thisOrder.tour.sold + thisOrder.quantity;
 
@@ -50,6 +45,52 @@ class BookingManagerController {
     })
 
     await Promise.all([newInvoice, updatedTour, updatedOrder])
+    var transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.userEmail,
+        pass: process.env.passwordEmail
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+    var content = '';
+    content += `
+    <div style="padding: 10px; background-color: #003375">
+      <div style="padding: 10px; background-color: white;">
+        <h1 style="color: blue">SetSail Tour Travel Announcement</h1>
+        <h2 style="color: green">You've already deposited successfully tour <span style="color: purple">${ thisOrder.tour.name }</span> with following information:</h2>
+        <ul>
+          <li>Full Name: ${ thisOrder.fullName }</li>
+          <li>Phone Number: ${ thisOrder.phoneNumber }</li>
+          <li>Quantity: ${ thisOrder.quantity }</li>
+          <li>Address: ${ thisOrder.address }</li>
+          <li>Note: ${ thisOrder.note }</li>
+          <li>Total: ${ thisOrder.totalPrice } ($)</li>
+          <li>Deposited: ${ thisOrder.totalPrice * 0.3 } ($)</li>
+        </ul>
+      </div>
+    </div>
+    `;
+
+    var mainOptions = {
+      from: 'SetSail Tour Travel',
+      to: 'thaidoandat1@gmail.com',
+      subject: 'Confirm deposit successfully',
+      html: content
+    }
+
+    transporter.sendMail(mainOptions, function(err, info) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        console.log('Message sent: ' + info.response);
+        res.send('ok');
+      }
+    })
     res.send('ok')
   }
 
@@ -128,12 +169,7 @@ class BookingManagerController {
   allOrders(req, res, next) {
     order.findMany({
       include: {
-        tour: {
-          select: {
-            name: true,
-            id: true
-          }
-        }
+        tour: true
       }
     })
       .then(orders => res.send(orders))
@@ -210,7 +246,47 @@ class BookingManagerController {
       })
         .then(order => res.send(order))
     }
+  }
 
+  sendEmail(req, res, next) {
+    var transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'thaidat2409@gmail.com',
+        pass: 'dattrong1@'
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+    var content = '';
+    content += `
+    <div style="padding: 10px; background-color: #003375">
+      <div style="padding: 10px; background-color: white;">
+        <h4 style="color: #0085ff">Gửi mail với nodemailer và express</h4>
+        <span style="color: black">Đây là mail test</span>
+      </div>
+    </div>
+    `;
+
+    var mainOptions = {
+      from: 'SetSail Tour Travel',
+      to: 'thaidoandat1@gmail.com',
+      subject: 'Confirm deposit successfully',
+      text: 'abcd',
+      html: content
+    }
+
+    transporter.sendMail(mainOptions, function(err, info) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        console.log('Message sent: ' + info.response);
+        res.send('ok');
+      }
+    })
   }
 }
 

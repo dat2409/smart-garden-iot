@@ -68,6 +68,11 @@ export default {
           to: "/ssadmin/destination",
         },
         {
+          icon: "mdi-notebook-outline",
+          title: "Plan",
+          to: "/ssadmin/plan",
+        },
+        {
           icon: "mdi-room-service-outline",
           title: "Service",
           to: "/ssadmin/service",
@@ -83,9 +88,9 @@ export default {
           to: "/ssadmin/booking",
         },
         {
-          icon: "mdi-notebook-outline",
-          title: "Plan",
-          to: "/ssadmin/plan",
+          icon: "mdi-receipt",
+          title: "Invoice",
+          to: "/ssadmin/invoice",
         },
         {
           icon: "mdi-account-group-outline",

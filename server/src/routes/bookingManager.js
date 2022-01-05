@@ -10,5 +10,5 @@ router.get('/orders', bookingManagerController.allOrders);
 router.get('/invoices/edit/:invoiceId', bookingManagerController.editInvoice);
 router.patch('/invoices/:invoiceId', bookingManagerController.updateInvoice);
 router.delete('/orders/:orderId', bookingManagerController.deleteOrder);
-
+router.post('/sendEmail', bookingManagerController.sendEmail);
 module.exports = router;

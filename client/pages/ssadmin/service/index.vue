@@ -7,7 +7,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search by name or address"
+          label="Search by name"
           single-line
           hide-details
         ></v-text-field>

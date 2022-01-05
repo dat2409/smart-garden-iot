@@ -4,14 +4,14 @@ const { plan, dayPlan } = new PrismaClient();
 class PlanController {
   /**
    * [POST]
-   * /plans/:destinationId
+   * /plans/
    */
   create(req, res, next) {
     const { name, dayPlans } = req.body;
     plan.create({
       data: {
         name,
-        destinationId: parseInt(req.params.destinationId)
+        destinationId: parseInt(req.body.destinationId)
       }
     })
       .then(async function (newPlan) {
@@ -19,7 +19,7 @@ class PlanController {
           const { day, title, desc } = dayPlans[i];
           await dayPlan.create({
             data: {
-              day,
+              day: parseInt(day),
               title,
               desc,
               planId: newPlan.id
@@ -51,7 +51,12 @@ class PlanController {
    * /plans/
    */
   index(req, res, next) {
-    plan.findMany()
+    plan.findMany({
+      include: {
+        dayplans: true,
+        destination: true
+      }
+    })
       .then(plans => res.send(plans))
   }
 
@@ -107,19 +112,12 @@ class PlanController {
    * /plans/:id
    */
   deletePlan(req, res, next) {
-    dayPlan.deleteMany({
+    plan.delete({
       where: {
-        planId: parseInt(req.params.id)
+        id: parseInt(req.params.id)
       }
     })
-      .then(() => {
-        plan.delete({
-          where: {
-            id: parseInt(req.params.id)
-          }
-        })
-          .then(() => res.send('ok'))
-      })
+      .then((plan) => res.send(plan));
   }
 
   /**

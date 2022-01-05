@@ -8,7 +8,6 @@ const path = require('path');
 let multer = require('multer');
 
 router.get('/:id', destinationController.show);
-router.get('/', destinationController.index);
 router.get('/edit/:id', destinationController.edit);
 // router.patch('/:id', destinationController.update);
 router.delete('/:id', destinationController.delete);
@@ -62,5 +61,7 @@ router.post('/', upload.array('imagesArray', 10), (req, res, next) => {
   })
     .then(result => res.json(result))
 })
+
+router.get('/', destinationController.index);
 
 module.exports = router;

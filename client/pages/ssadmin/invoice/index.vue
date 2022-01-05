@@ -1,13 +1,13 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="bookings"
+    :items="invoices"
     class="elevation-1"
     :search="search"
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title class="text-uppercase">Bookings</v-toolbar-title>
+        <v-toolbar-title class="text-uppercase">Invoices</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-text-field
           v-model="search"
@@ -17,9 +17,6 @@
           hide-details
         ></v-text-field>
       </v-toolbar>
-    </template>
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small @click="deleteItemConfirm(item)"> mdi-delete </v-icon>
     </template>
     <template v-slot:[`item.isDeposited`]="{ item }">
       <v-chip
@@ -38,8 +35,8 @@ export default {
   fetch() {
     try {
       this.$axios
-        .get("/booking-manager/orders")
-        .then((bookings) => (this.bookings = bookings.data));
+        .get("/invoice-manager/orders")
+        .then((invoices) => (this.invoices = invoices.data));
     } catch (err) {
       return err;
     }
@@ -86,21 +83,21 @@ export default {
         },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      bookings: [],
+      invoices: [],
       name: "",
       search: "",
     };
   },
   methods: {
-    viewBooking(item) {
-      this.$router.push(`/ssadmin/booking/${item.id}`);
+    viewinvoice(item) {
+      this.$router.push(`/ssadmin/invoice/${item.id}`);
     },
     getColor(deposit) {
       if (deposit) return "green";
       else return "red";
     },
-    confirmDeposit(booking) {
-      if (!booking.isDeposited) {
+    confirmDeposit(invoice) {
+      if (!invoice.isDeposited) {
         this.$swal
           .fire({
             title: "Confirm deposited?",
@@ -114,16 +111,16 @@ export default {
           .then((result) => {
             if (result.isConfirmed) {
               this.$axios
-                .post(`/booking-manager/invoices/${booking.id}`)
+                .post(`/invoice-manager/invoices/${invoice.id}`)
                 .then(() => this.$fetch());
               this.$swal.fire("", "Confirm deposit successfully!", "success");
             }
           });
       }
     },
-    deleteItemConfirm(booking) {
-      if (booking.isDeposited) {
-        this.$swal.fire("", "You can't delete deposited booking!", "error");
+    deleteItemConfirm(invoice) {
+      if (invoice.isDeposited) {
+        this.$swal.fire("", "You can't delete deposited invoice!", "error");
       } else {
         this.$swal
           .fire({
@@ -138,11 +135,11 @@ export default {
           .then((result) => {
             if (result.isConfirmed) {
               this.$axios
-                .delete(`/booking-manager/orders/${booking.id}`)
+                .delete(`/invoice-manager/orders/${invoice.id}`)
                 .then(() => this.$fetch());
               this.$swal.fire(
                 "Deleted!",
-                "The booking has been deleted.",
+                "The invoice has been deleted.",
                 "success"
               );
             }

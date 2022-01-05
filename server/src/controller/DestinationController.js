@@ -36,6 +36,11 @@ class DestinationController {
           select: {
             url: true
           }
+        },
+        plans: {
+          include: {
+            dayplans: true
+          }
         }
       }
     })
