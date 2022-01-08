@@ -20,7 +20,7 @@
           v-bind="attrs"
           v-on="on"
           >
-          <v-img src="https://picsum.photos/id/11/500/300"></v-img>
+          <v-img :src="require('~/assets/images/avatarSample.png')"></v-img>
         </v-avatar>
       </v-badge>
     </template>

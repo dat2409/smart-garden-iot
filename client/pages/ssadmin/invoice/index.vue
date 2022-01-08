@@ -18,12 +18,12 @@
         ></v-text-field>
       </v-toolbar>
     </template>
-    <template v-slot:[`item.isDeposited`]="{ item }">
+    <template v-slot:[`item.isPaid`]="{ item }">
       <v-chip
-        :color="getColor(item.isDeposited)"
+        :color="getColor(item.isPaid)"
         class="white--text"
-        @click="confirmDeposit(item)"
-        >{{ item.isDeposited }}</v-chip
+        @click="confirmPaid(item)"
+        >{{ item.isPaid }}</v-chip
       >
     </template>
   </v-data-table>
@@ -35,7 +35,7 @@ export default {
   fetch() {
     try {
       this.$axios
-        .get("/invoice-manager/orders")
+        .get("/booking-manager/invoices")
         .then((invoices) => (this.invoices = invoices.data));
     } catch (err) {
       return err;
@@ -47,41 +47,36 @@ export default {
         {
           text: "Full Name",
           align: "start",
-          value: "fullName",
+          value: "order.fullName",
         },
         {
           text: "Email",
-          value: "email",
+          value: "order.email",
         },
         {
           text: "Phone Number",
-          value: "phoneNumber",
+          value: "order.phoneNumber",
         },
         {
           text: "Address",
-          value: "address",
-        },
-        {
-          text: "Note",
-          value: "note",
+          value: "order.address",
         },
         {
           text: "Quantity",
-          value: "quantity",
+          value: "order.quantity",
         },
         {
           text: "Total ($)",
-          value: "totalPrice",
+          value: "order.totalPrice",
         },
         {
           text: "Tour",
-          value: "tour.name",
+          value: "order.tour.name",
         },
         {
-          text: "Deposited?",
-          value: "isDeposited",
-        },
-        { text: "Actions", value: "actions", sortable: false },
+          text: "Payment?",
+          value: "isPaid",
+        }
       ],
       invoices: [],
       name: "",
@@ -89,19 +84,16 @@ export default {
     };
   },
   methods: {
-    viewinvoice(item) {
-      this.$router.push(`/ssadmin/invoice/${item.id}`);
-    },
-    getColor(deposit) {
-      if (deposit) return "green";
+    getColor(booking) {
+      if (booking) return "green";
       else return "red";
     },
-    confirmDeposit(invoice) {
-      if (!invoice.isDeposited) {
+    confirmPaid(invoice) {
+      if (!invoice.isPaid) {
         this.$swal
           .fire({
-            title: "Confirm deposited?",
-            text: "You won't be able to revert this!",
+            title: "Confirm payment",
+            text: "This booking is made payment?",
             icon: "question",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -110,23 +102,20 @@ export default {
           })
           .then((result) => {
             if (result.isConfirmed) {
+              console.log(invoice.id)
               this.$axios
-                .post(`/invoice-manager/invoices/${invoice.id}`)
+                .patch(`/booking-manager/invoices/${invoice.id}`)
                 .then(() => this.$fetch());
               this.$swal.fire("", "Confirm deposit successfully!", "success");
             }
           });
       }
-    },
-    deleteItemConfirm(invoice) {
-      if (invoice.isDeposited) {
-        this.$swal.fire("", "You can't delete deposited invoice!", "error");
-      } else {
+      else {
         this.$swal
           .fire({
-            title: "Confirm delete?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
+            title: "Undo",
+            text: "This booking is not made payment?",
+            icon: "question",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
@@ -134,14 +123,11 @@ export default {
           })
           .then((result) => {
             if (result.isConfirmed) {
+              console.log(invoice.id)
               this.$axios
-                .delete(`/invoice-manager/orders/${invoice.id}`)
+                .patch(`/booking-manager/invoices/${invoice.id}`)
                 .then(() => this.$fetch());
-              this.$swal.fire(
-                "Deleted!",
-                "The invoice has been deleted.",
-                "success"
-              );
+              this.$swal.fire("", "Undo successfully!", "success");
             }
           });
       }

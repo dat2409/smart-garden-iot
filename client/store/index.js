@@ -4,5 +4,8 @@ export const getters = {
   },
   getUserInfo(state) {
     return state.auth.user;
+  },
+  isManager(state) {
+    return state.auth.user.role === 'MANAGER';
   }
 };

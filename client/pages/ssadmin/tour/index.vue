@@ -17,11 +17,9 @@
           hide-details
         ></v-text-field>
         <v-spacer></v-spacer>
-        <NuxtLink to="/ssadmin/tour/new" class="text-decoration-none">
-          <v-btn color="primary" dark class="mb-2 bg-gradient-primary">
+          <v-btn color="primary" @click="newTour" dark class="mb-2 bg-gradient-primary">
             New tour
           </v-btn>
-        </NuxtLink>
       </v-toolbar>
     </template>
 
@@ -32,6 +30,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   layout: "admin",
   fetch() {
@@ -79,6 +78,14 @@ export default {
   methods: {
     viewTour(item) {
       this.$router.push(`/ssadmin/tour/${item.id}`)
+    },
+    newTour() {
+      if (this.$store.getters.isManager) {
+        this.$router.push('/ssadmin/tour/new')
+      }
+      else {
+        this.$swal.fire("No Permission!", "Only manager can do this action!", "warning");
+      }
     }
   },
   middleware: ["isAuthenticated"],

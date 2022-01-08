@@ -21,7 +21,7 @@ const auth = require('../middleware/auth');
 // }
 
 function route(app) {
-  app.use('/user', userRouter);
+  app.use('/users', userRouter);
   app.use('/login', loginRouter);
   app.use('/destinations', destinationRouter);
   app.use('/services', serviceRouter);
