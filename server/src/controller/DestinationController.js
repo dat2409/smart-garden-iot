@@ -47,6 +47,16 @@ class DestinationController {
       .then(destinations => res.json(destinations))
   }
 
+  display(req, res, next) {
+    destination.findMany({
+      include: {
+        images: true
+      },
+      take: 3
+    })
+      .then(destinations => res.send(destinations));
+  }
+
   /**
    * [GET]
    * /destinations/edit/:id

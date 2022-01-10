@@ -1,7 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
-const { tourService, tour } = new PrismaClient();
-const set = require('date-fns/set');
-
+const { PrismaClient, Prisma } = require('@prisma/client');
+const { tourService, tour, plan, destination } = new PrismaClient();
+const prisma = new PrismaClient();
 class TourController {
   /**
    * [POST]
@@ -13,16 +12,16 @@ class TourController {
 
     const departureTime = new Date(`${departureDay} ${departureTimeReq}`)
 
-      const listServices = [];
-      for (var i = 0; i < services.length; i++) {
-        listServices[i] = {
-          service: {
-            connect: {
-              name: services[i],
-            }
+    const listServices = [];
+    for (var i = 0; i < services.length; i++) {
+      listServices[i] = {
+        service: {
+          connect: {
+            name: services[i],
           }
         }
       }
+    }
 
     tour.create({
       data: {
@@ -47,6 +46,7 @@ class TourController {
    * /tours/:id
    */
   show(req, res, next) {
+    console.log('req params nè ', req.params);
     tour.findUnique({
       where: {
         id: parseInt(req.params.id)
@@ -80,8 +80,12 @@ class TourController {
     tour.findMany({
       include: {
         plan: {
-          select: {
-            name: true
+          include: {
+            destination: {
+              include: {
+                images: true
+              }
+            }
           }
         },
         services: {
@@ -198,11 +202,13 @@ class TourController {
       })
   }
 
-  test(req, res) {
-    const day = '2022-02-03';
-    const time = '08:30';
-    const datetime = new Date(`${day} ${time}`);
-    res.send(datetime)
+  search(req, res, next) {
+    const destinationName = `%${req.query.destinationName}`;
+    const month = `%${req.query.month}`
+    prisma.$queryRaw`SELECT * FROM Tour, Destination, Plan where
+      Tour.planId = Plan.id and Plan.destinationId = Destination.id and
+      Destination.name like ${destinationName} and month(tour.departureTime) like ${month}`
+      .then(tours => res.send(tours))
   }
 }
 

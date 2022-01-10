@@ -2,19 +2,19 @@
   <v-app dark>
     <v-main>
       <user-header />
-      <v-container>
-        <Nuxt />
-      </v-container>
+      <Nuxt />
+      <user-footer />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import UserHeader from '../components/userComponents/UserHeader.vue'
+import UserFooter from '../components/userComponents/UserFooter.vue';
+import UserHeader from '../components/userComponents/UserHeader.vue';
 export default {
-  name: 'admin',
+  name: "default",
   components: {
     UserHeader,
-  }
-}
-</script>
+    UserFooter
+  },
+};

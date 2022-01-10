@@ -7,6 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 let multer = require('multer');
 
+router.get('/display', destinationController.display);
 router.get('/:id', destinationController.show);
 router.get('/edit/:id', destinationController.edit);
 // router.patch('/:id', destinationController.update);

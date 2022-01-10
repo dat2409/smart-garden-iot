@@ -3,7 +3,7 @@ const router = express.Router();
 const tourController = require('../controller/TourController');
 
 router.post('/', tourController.create);
-router.post('/test', tourController.test);
+router.get('/search/', tourController.search);
 router.get('/:id', tourController.show);
 router.get('/', tourController.index);
 router.get('/edit/:id', tourController.edit);
