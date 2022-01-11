@@ -22,7 +22,22 @@
   border-radius: 0 50px 50px 0;
 }
 
-.border-day-plan {
-  border: dashed 1px #c48eff;
-  margin-bottom: 50px;
+.contain {
+  position: relative;
+  text-align: center;
+}
+
+.tours-text-image-header {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.v-tab--active {
+  background-color: white;
+}
+
+.v-tab--active span {
+  color: #4dd0e1;
 }

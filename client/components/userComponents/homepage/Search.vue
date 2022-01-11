@@ -79,11 +79,11 @@ export default {
 <style>
 .search-text fieldset {
   color: white !important;
-  box-shadow: 0px 5px 0px #1de9b6;
+  box-shadow: 0px 5px 0px #4dd0e1;
 }
 
 .box-shadow {
-  box-shadow: 0px 5px 0px #1de9b6;
+  box-shadow: 0px 5px 0px #4dd0e1;
 }
 </style>
 

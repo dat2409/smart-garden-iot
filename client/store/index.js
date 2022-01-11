@@ -9,3 +9,19 @@ export const getters = {
     return state.auth.user.role === 'MANAGER';
   }
 };
+
+export const state = () => ({
+  selectedTour: {}
+})
+
+export const mutations = {
+  setSelectedTour(state, selectedTour) {
+    state.selectedTour = selectedTour;
+  }
+}
+
+export const actions = {
+  setSelectedTour({ commit }, selectedTour) {
+    commit('setSelectedTour', selectedTour);
+  }
+}

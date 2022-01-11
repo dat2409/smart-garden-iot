@@ -9,6 +9,8 @@ class BookingController {
   create(req, res, next) {
     const newOrder = req.body;
     newOrder.tourId = parseInt(req.params.tourId);
+    newOrder.quantity = parseInt(newOrder.quantity);
+    newOrder.totalPrice = parseInt(newOrder.totalPrice);
 
     order.create({
       data: newOrder

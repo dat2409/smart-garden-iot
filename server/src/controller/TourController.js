@@ -46,7 +46,6 @@ class TourController {
    * /tours/:id
    */
   show(req, res, next) {
-    console.log('req params nè ', req.params);
     tour.findUnique({
       where: {
         id: parseInt(req.params.id)
@@ -85,7 +84,8 @@ class TourController {
               include: {
                 images: true
               }
-            }
+            },
+            dayplans: true
           }
         },
         services: {

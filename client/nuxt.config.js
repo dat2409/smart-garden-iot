@@ -35,6 +35,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: './plugins/vue-notification.js', mode: 'client'},
+    { src: '~/plugins/persistedState.client.js' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -102,9 +103,11 @@ export default {
           success: colors.green.accent3,
           adminBackground: colors.deepPurple.lighten5,
           mainstream: colors.deepPurple.darken1,
-          userColor: colors.teal.accent2,
-          userColorDarker: colors.teal.accent3,
-          userBg: colors.green.lighten5,
+          userColor: colors.cyan.lighten2,
+          userColor2: colors.cyan.lighten2,
+          userColorLighter: colors.cyan.lighten3,
+          userColorDarker: colors.cyan.lighten2,
+          userBg: colors.cyan.lighten5,
         }
       }
     }
