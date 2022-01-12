@@ -6,7 +6,6 @@
       :clipped="clipped"
       app
       class="adminBackground"
-      floating
     >
       <v-list>
         <v-list-item-group
@@ -32,7 +31,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar :clipped-left="clipped" fixed app flat class="adminBackground">
+    <v-app-bar :clipped-left="clipped" fixed app class="adminBackground">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon

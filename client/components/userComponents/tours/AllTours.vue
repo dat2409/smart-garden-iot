@@ -44,7 +44,6 @@ export default {
   methods: {
     setSelectedTour(tour) {
       this.$store.dispatch("setSelectedTour", tour);
-      console.log(this.$store.state.selectedTour);
     },
   },
 };

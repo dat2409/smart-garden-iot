@@ -16,22 +16,22 @@ export default {
         {
           src: require("~/assets/images/slider/carousel3.jpg"),
           title: `Let's go now`,
-          subtitle: `Relax and Enjoy`
+          subtitle: `Relax and Enjoy`,
         },
         {
           src: require("~/assets/images/slider/carousel2.jpg"),
           title: `Come with us`,
-          subtitle: `Explore and Travel`
+          subtitle: `Explore and Travel`,
         },
         {
           src: require("~/assets/images/slider/carousel1.jpg"),
           title: `Let's go now`,
-          subtitle: `Relax and Enjoy`
+          subtitle: `Relax and Enjoy`,
         },
         {
           src: require("~/assets/images/slider/carousel4.jpg"),
           title: `Come with us`,
-          subtitle: `Explore and Travel`
+          subtitle: `Explore and Travel`,
         },
       ],
     };
@@ -46,5 +46,4 @@ export default {
   font-size: 72px;
   font-weight: 500;
 }
-
 </style>

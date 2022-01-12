@@ -1,14 +1,13 @@
 <template>
   <div class="tours-page">
     <div class="contain">
-      <v-img
+      <v-parallax
         :src="require('~/assets/images/tour-image-header.jpg')"
-        max-height="500"
       >
-      </v-img>
+      </v-parallax>
       <div
         class="
-          tours-text-image-header
+          text-image-header
           font-weight-bold
           display-3
           white--text

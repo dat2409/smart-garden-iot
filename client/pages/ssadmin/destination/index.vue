@@ -1,5 +1,10 @@
 <template>
-  <v-data-table :headers="headers" :items="destinations" class="elevation-1" :search="search">
+  <v-data-table
+    :headers="headers"
+    :items="destinations"
+    class="elevation-1"
+    :search="search"
+  >
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title class="text-uppercase">Destinations</v-toolbar-title>
@@ -58,28 +63,12 @@
             </v-form>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title>
-              <h3 class="text-center">Are you sure you want to delete this destination?</h3>
-              <p class="red--text">If you delete this destination, you also delete the tour to this place and all relations!</p>
-              </v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
-              >
-              <v-btn color="blue darken-1" text @click="deleteItem()">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </v-toolbar>
     </template>
 
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItemConfirm(item)"> mdi-delete </v-icon>
+      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
   </v-data-table>
 </template>
@@ -106,10 +95,7 @@ export default {
       name: "",
       address: "",
       desc: "",
-      dialogDelete: false,
-      destinationDelete: null,
       search: "",
-
     };
   },
   fetch() {
@@ -139,26 +125,35 @@ export default {
         this.close();
       });
     },
-    closeDelete() {
-      this.dialogDelete = false;
-    },
     close() {
       this.dialog = false;
     },
     editItem(item) {
       console.log(item);
     },
-    deleteItem() {
-      this.$axios
-        .delete(`/destinations/${this.destinationDelete.id}`)
-        .then(() => {
-          this.$fetch();
-          this.closeDelete();
+    deleteItem(item) {
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          html: '<span style="color: red">If you delete this destination, you also delete the tour to this place and all relations!</span>',
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            this.$axios.delete(`/destinations/${item.id}`).then(() => {
+              this.$fetch();
+              this.$swal.fire(
+                "Deleted!",
+                "Destination has been deleted.",
+                "success"
+              );
+            });
+          }
         });
-    },
-    deleteItemConfirm(item) {
-      this.dialogDelete = true;
-      this.destinationDelete = item;
     },
   },
   middleware: ["isAuthenticated"],

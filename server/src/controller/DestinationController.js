@@ -14,7 +14,7 @@ class DestinationController {
       where: {
         id: parseInt(req.params.id)
       },
-      select: {
+      include: {
         images: {
           select: {
             url: true

@@ -83,7 +83,7 @@ export default {
         { name: "Home", to: "/" },
         { name: "Destinations", to: "/destinations" },
         { name: "Tours", to: "/tours" },
-        { name: "About", to: "/pages" },
+        { name: "About", to: "/about" },
       ],
       actionIcons: [
         { icon: "mdi-cart-outline" },

@@ -1,14 +1,13 @@
 <template>
   <div class="tour-detail">
     <div class="contain">
-      <v-img
+      <v-parallax
         :src="require('~/assets/images/tour-image-header.jpg')"
-        max-height="500"
       >
-      </v-img>
+      </v-parallax>
 
-      <div class="tours-text-image-header display-1 white--text">
-        <p class="amazing-tour text-center text-capitalize">amazing tour</p>
+      <div class="text-image-header display-1 white--text">
+        <p class="text-image-header-satisfy text-center text-capitalize">amazing tour</p>
         <p class="font-weight-bold display-2 text-uppercase">{{ tour.name }}</p>
       </div>
     </div>
@@ -92,10 +91,6 @@ export default {
 </script>
 
 <style>
-.amazing-tour {
-  font-family: "Satisfy", cursive;
-}
-
 .v-tab--active .v-icon {
   color: #4dd0e1;
 }
