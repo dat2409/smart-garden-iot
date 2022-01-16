@@ -15,6 +15,7 @@
           return-object
           single-line
         />
+        <v-divider></v-divider>
         <v-container
           v-for="(dayPlan, index) in dayPlans"
           :key="index"

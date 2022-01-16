@@ -34,7 +34,6 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: './plugins/vue-notification.js', mode: 'client'},
     { src: '~/plugins/persistedState.client.js' },
   ],
 

@@ -1,6 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const { invoice, tour, order } = new PrismaClient();
 const nodemailer = require('nodemailer');
+const Queue = require('bull');
+const { REDIS_URL, USER_EMAIL, PASSWORD_EMAIL } = process.env;
 
 class BookingManagerController {
   /**
@@ -45,53 +47,72 @@ class BookingManagerController {
     })
 
     await Promise.all([newInvoice, updatedTour, updatedOrder])
-    var transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      auth: {
-        user: process.env.userEmail,
-        pass: process.env.passwordEmail
-      },
-      tls: {
-        rejectUnauthorized: false
-      }
-    });
 
-    var content = '';
-    content += `
-    <div style="padding: 10px; background-color: #003375">
-      <div style="padding: 10px; background-color: white;">
-        <h1 style="color: blue">SetSail Tour Travel Announcement</h1>
-        <h2 style="color: green">You've already deposited successfully tour <span style="color: purple">${ thisOrder.tour.name }</span> with following information:</h2>
-        <ul>
-          <li>Full Name: ${ thisOrder.fullName }</li>
-          <li>Phone Number: ${ thisOrder.phoneNumber }</li>
-          <li>Quantity: ${ thisOrder.quantity }</li>
-          <li>Address: ${ thisOrder.address }</li>
-          <li>Note: ${ thisOrder.note }</li>
-          <li>Total: ${ thisOrder.totalPrice } ($)</li>
-          <li>Deposited: ${ thisOrder.totalPrice * 0.3 } ($)</li>
-        </ul>
-      </div>
-    </div>
-    `;
+    const sendEmailQueue = new Queue('emailPayment', REDIS_URL);
 
-    var mainOptions = {
-      from: 'SetSail Tour Travel',
-      to: 'thaidoandat1@gmail.com',
-      subject: 'Confirm deposit successfully',
-      html: content
+    const queueOptions = {
+      attempts: 2,
     }
 
-    transporter.sendMail(mainOptions, function(err, info) {
-      if (err) {
-        console.log(err);
-      }
-      else {
-        console.log('Message sent: ' + info.response);
-        res.send('ok');
-      }
-    })
-    res.send('ok')
+    const data = {
+      email: thisOrder.email
+    };
+
+    sendEmailQueue.add(data, queueOptions);
+
+    sendEmailQueue.process(async job => {
+      return await sendMail(job.data.email);
+    });
+
+    function sendMail(email) {
+      return new Promise((resolve, reject) => {
+        var transporter = nodemailer.createTransport({
+          service: 'Gmail',
+          auth: {
+            user: USER_EMAIL,
+            pass: PASSWORD_EMAIL
+          },
+          tls: {
+            rejectUnauthorized: false
+          }
+        });
+
+        var content = `
+        <div style="padding: 10px; background-color: #003375">
+          <div style="padding: 10px; background-color: white;">
+            <h1 style="color: blue">SetSail Tour Travel Announcement</h1>
+            <h2 style="color: green">You've already deposited successfully tour <span style="color: purple">${thisOrder.tour.name}</span> with following information:</h2>
+            <ul>
+              <li>Full Name: ${thisOrder.fullName}</li>
+              <li>Phone Number: ${thisOrder.phoneNumber}</li>
+              <li>Quantity: ${thisOrder.quantity}</li>
+              <li>Address: ${thisOrder.address}</li>
+              <li>Note: ${thisOrder.note}</li>
+              <li>Total: ${thisOrder.totalPrice} ($)</li>
+              <li>Deposited: ${thisOrder.totalPrice * 0.5} ($)</li>
+            </ul>
+          </div>
+        </div>
+        `;
+
+        var mainOptions = {
+          from: 'SetSail Tour Travel',
+          to: email,
+          subject: 'Confirm deposit successfully',
+          html: content
+        }
+
+        transporter.sendMail(mainOptions, function (err, info) {
+          if (err) {
+            reject(err);
+          }
+          else {
+            console.log('Message sent: ' + info.response);
+            res.send('ok');
+          }
+        })
+      });
+    }
   }
 
   /**
@@ -278,7 +299,7 @@ class BookingManagerController {
       html: content
     }
 
-    transporter.sendMail(mainOptions, function(err, info) {
+    transporter.sendMail(mainOptions, function (err, info) {
       if (err) {
         console.log(err);
       }

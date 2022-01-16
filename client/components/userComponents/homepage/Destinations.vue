@@ -40,7 +40,7 @@
         :key="index"
         align="center"
       >
-        <NuxtLink to="/" class="text-decoration-none"><v-avatar size="350">
+        <NuxtLink :to="`/destinations/${destination.id}`" class="text-decoration-none"><v-avatar size="350">
           <v-img
             :src="`${destination.images[index].url}`">
             <v-row align="center" justify="center" class="destination-text-image">

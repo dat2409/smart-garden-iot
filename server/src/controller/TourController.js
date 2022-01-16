@@ -68,7 +68,10 @@ class TourController {
         }
       }
     })
-      .then(tour => res.send(tour))
+      .then(tour => {
+        tour.star = Math.round(tour.star * 10) / 10
+        res.send(tour)
+      })
   }
 
   /**
@@ -97,6 +100,81 @@ class TourController {
             }
           }
         }
+      }
+    })
+      .then(tour => res.send(tour))
+  }
+
+  /**
+   * [GET]
+   * /tours/date-desc
+   */
+  allToursByDateDesc(req, res, next) {
+    tour.findMany({
+      include: {
+        plan: {
+          include: {
+            destination: {
+              include: {
+                images: true
+              }
+            },
+            dayplans: true
+          }
+        },
+      },
+      orderBy: {
+        departureTime: 'desc'
+      }
+    })
+      .then(tour => res.send(tour))
+  }
+
+  /**
+   * [GET]
+   * /tours/price-desc
+   */
+  allToursByPriceDesc(req, res, next) {
+    tour.findMany({
+      include: {
+        plan: {
+          include: {
+            destination: {
+              include: {
+                images: true
+              }
+            },
+            dayplans: true
+          }
+        },
+      },
+      orderBy: {
+        price: 'desc'
+      }
+    })
+      .then(tour => res.send(tour))
+  }
+
+  /**
+   * [GET]
+   * /tours/price-asc
+   */
+  allToursByPriceAsc(req, res, next) {
+    tour.findMany({
+      include: {
+        plan: {
+          include: {
+            destination: {
+              include: {
+                images: true
+              }
+            },
+            dayplans: true
+          }
+        },
+      },
+      orderBy: {
+        price: 'asc'
       }
     })
       .then(tour => res.send(tour))
@@ -179,7 +257,6 @@ class TourController {
         })
           .then(tour => res.send(tour))
       })
-
   }
 
   /**
@@ -203,12 +280,55 @@ class TourController {
   }
 
   search(req, res, next) {
-    const destinationName = `%${req.query.destinationName}`;
-    const month = `%${req.query.month}`
-    prisma.$queryRaw`SELECT * FROM Tour, Destination, Plan where
-      Tour.planId = Plan.id and Plan.destinationId = Destination.id and
-      Destination.name like ${destinationName} and month(tour.departureTime) like ${month}`
-      .then(tours => res.send(tours))
+    const destinationName = req.query.destinationName;
+    const tourName = req.query.tourName || '';
+    if (req.query.from) {
+      var from = new Date(req.query.from)
+    }
+    else {
+      var from = new Date('1000-01-01')
+    };
+
+    if (req.query.to) {
+      var to = new Date(req.query.to)
+    }
+    else {
+      var to = new Date('3000-01-01')
+    };
+
+    tour.findMany({
+      where: {
+        plan: {
+          destination: {
+            name: {
+              contains: destinationName
+            }
+          }
+        },
+        departureTime: {
+          gte: from,
+          lte: to
+        },
+        name: {
+          contains: tourName
+        }
+      },
+      include: {
+        plan: {
+          include: {
+            destination: {
+              include: {
+                images: true
+              }
+            },
+            dayplans: true
+          }
+        },
+      }
+    })
+      .then(tours => {
+        res.send(tours);
+      });
   }
 }
 

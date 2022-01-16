@@ -35,7 +35,7 @@
           dot
         >
           <v-avatar size="40px">
-            <v-img src="https://picsum.photos/id/11/500/300"></v-img>
+            <v-img :src="require('~/assets/images/avatarSample.png')"></v-img>
           </v-avatar>
         </v-badge>
         <div
@@ -43,9 +43,9 @@
           style="vertical-align:middle"
         >
           <span class="text--primary font-weight-semibold mb-n1">
-            John Doe
+            {{ currentUser.fullName }}
           </span>
-          <small class="text--disabled text-capitalize">Admin</small>
+          <small class="text--disabled text-capitalize">{{ currentUser.role }}</small>
         </div>
         <v-divider></v-divider>
       <v-list-item router to="/ssadmin/user/profile">
@@ -71,7 +71,8 @@ export default {
       items: [
         { icon: 'mdi-clipboard-account-outline', title: 'Profile' },
         { icon: 'mdi-logout', title: 'Logout' },
-      ]
+      ],
+      currentUser: this.$auth.user
     }
   },
   methods: {

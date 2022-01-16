@@ -7,17 +7,18 @@
     </v-card-title>
     <v-form @submit.prevent="updateTour">
       <v-card-text>
-        <v-text-field v-model="tour.name" label="Name" />
+        <v-text-field v-model="tour.name" label="Name" outlined/>
         <v-select
           v-if="plan.destination"
           v-model="plan"
           :items="plans"
-          :item-text="plan => plan.name + ' - ' + plan.destination.name"
+          :item-text="(plan) => plan.name + ' - ' + plan.destination.name"
           item-value="plan"
           label="Plan"
           return-object
+          outlined
         />
-        <v-text-field v-model="tour.departure" label="Departure" />
+        <v-text-field v-model="tour.departure" label="Departure" outlined/>
         <v-menu
           v-model="menu"
           :close-on-content-click="false"
@@ -33,6 +34,7 @@
               readonly
               v-bind="attrs"
               v-on="on"
+              outlined
             ></v-text-field>
           </template>
           <v-date-picker
@@ -57,6 +59,7 @@
               readonly
               v-bind="attrs"
               v-on="on"
+              outlined
             ></v-text-field>
           </template>
           <v-time-picker
@@ -72,11 +75,17 @@
           label="Price"
           append-icon="mdi-currency-usd"
           type="number"
+          outlined
         />
         <v-textarea v-model="tour.desc" label="Description" outlined />
-        <v-text-field v-model="tour.maxPeople" label="Max People" type="number"/>
-        <v-text-field v-model="tour.sold" label="Sold" disabled />
-        <v-text-field v-model="tour.flight" label="Flight" />
+        <v-text-field
+          v-model="tour.maxPeople"
+          label="Max People"
+          type="number"
+          outlined
+        />
+        <v-text-field v-model="tour.sold" label="Sold" disabled outlined/>
+        <v-text-field v-model="tour.flight" label="Flight" outlined/>
         <v-select
           v-model="selectedServices"
           :items="services"
@@ -84,9 +93,13 @@
           label="Service"
           return-object
           multiple
+          outlined
         />
       </v-card-text>
       <v-card-actions>
+        <v-btn @click="deleteTour" class="bg-gradient-warning" dark
+          >Delete</v-btn
+        >
         <v-spacer></v-spacer>
         <v-btn type="submit" class="bg-gradient-primary" dark>Update</v-btn>
       </v-card-actions>
@@ -152,11 +165,41 @@ export default {
           .patch(`/tours/${this.$route.params.tourId}`, updatedTour)
           .then(() => {
             this.$fetch();
-            this.$swal.fire("Successful!", "You've already updated tour!", "success");
+            this.$swal.fire(
+              "Successful!",
+              "You've already updated tour!",
+              "success"
+            );
           });
       } catch (error) {
         console.log(error);
       }
+    },
+    deleteTour() {
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            this.$axios
+              .delete(`/tours/${this.$route.params.tourId}`)
+              .then(() => {
+                this.$swal.fire(
+                  "Deleted!",
+                  "This tour has been deleted.",
+                  "success"
+                );
+                this.$router.push("/ssadmin/tour");
+              });
+          }
+        });
     },
   },
 };

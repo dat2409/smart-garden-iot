@@ -17,7 +17,7 @@
         readonly
         size="26"
         class="mt-5 ml-n2"
-        v-model="rating"
+        v-model="selectedTour.star"
         half-increments
       ></v-rating>
     </v-card-subtitle>
@@ -46,7 +46,7 @@
       <v-row class="mb-3">
         <v-col cols=12 md=3 class="font-weight-bold black--text body-1">Services</v-col>
         <v-col cols=12 md=9 class="body-1 black--text">
-          <span v-for="(service, index) in selectedTour.services" :key="index"><v-chip color="userColor2" text-color="white" class="mr-2 mt-n3">{{ service.service.name }}</v-chip></span>
+          <span v-for="(service, index) in selectedTour.services" :key="index"><v-chip color="userColor2" text-color="white" class="mr-2 mt-n1">{{ service.service.name }}</v-chip></span>
         </v-col>
       </v-row>
     </v-card-text>
@@ -59,7 +59,6 @@ export default {
   computed: mapState(["selectedTour"]),
   data() {
     return {
-      rating: 4.5,
     }
   }
 };

@@ -67,8 +67,16 @@
     </template>
 
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      <v-icon small @click="showDestination(item)"> mdi-eye </v-icon>
+      <v-icon small @click="deleteDestination(item)"> mdi-delete </v-icon>
+    </template>
+    <template v-slot:[`item.desc`]="{ item }">
+      <span
+      class="d-inline-block text-truncate"
+      style="max-width: 500px;"
+    >
+      {{ item.desc }}
+    </span>
     </template>
   </v-data-table>
 </template>
@@ -86,7 +94,6 @@ export default {
         },
         { text: "Address", value: "address" },
         { text: "Description", value: "desc", width: "50%", filterable: false },
-        { text: "Images", value: "name" },
         { text: "Actions", value: "actions", sortable: false },
       ],
       destinations: [],
@@ -128,10 +135,7 @@ export default {
     close() {
       this.dialog = false;
     },
-    editItem(item) {
-      console.log(item);
-    },
-    deleteItem(item) {
+    deleteDestination(item) {
       this.$swal
         .fire({
           title: "Are you sure?",
@@ -154,6 +158,9 @@ export default {
             });
           }
         });
+    },
+    showDestination(item) {
+      this.$router.push(`/ssadmin/destination/${item.id}`);
     },
   },
   middleware: ["isAuthenticated"],

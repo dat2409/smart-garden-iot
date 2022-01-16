@@ -34,7 +34,7 @@
             v-for="(image, index) in destination.images"
             :key="index"
           >
-            <v-dialog v-model="dialog">
+            <v-dialog>
               <template v-slot:activator="{ on, attrs }">
                 <v-img
                   :src="image.url"
@@ -44,7 +44,7 @@
                 ></v-img>
               </template>
               <v-card>
-                <v-img :src="image.url" :aspect-ratio="16/9" max-height="500"></v-img>
+                <v-img :src="image.url" :aspect-ratio="16/9"></v-img>
               </v-card>
             </v-dialog>
           </v-col>
@@ -65,7 +65,6 @@ export default {
     this.$axios
       .get(`/destinations/${this.$route.params.destinationId}`)
       .then((destination) => {
-        console.log("destination duoc chon", destination.data);
         this.destination = destination.data;
       });
   },

@@ -87,6 +87,7 @@
 <script>
 export default {
   data() {
+    let tour = this.$store.state.selectedTour;
     return {
       fullName: "",
       email: "",
@@ -94,7 +95,7 @@ export default {
       phoneNumber: "",
       address: "",
       note: "",
-      quantity: null,
+      quantity: 0,
       totalPrice: null,
       selectedTour: this.$store.state.selectedTour,
       nameRules: [(v) => !!v || "Name is required!"],
@@ -107,7 +108,10 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
       ],
       phoneNumberRules: [(v) => !!v || "Phone number is required!"],
-      quantityRules: [(v) => !!v || "Quantity is required!"],
+      quantityRules: [
+        (v) => !!v || "Quantity is required!",
+        v => parseInt(v) + tour.sold <= tour.maxPeople || "Exceed the maximum number of people "
+      ],
     };
   },
   computed: {
@@ -133,8 +137,12 @@ export default {
           totalPrice: this.totalPrice,
         };
         this.$axios
-          .post(`/booking/${this.selectedTour.id}`, formBooking)
-          .then(() => this.$swal.fire("", "Book tour successfully", "success"));
+          .post(`/booking/${this.selectedTour.id}`, formBooking, {
+            params: {
+              tourName: this.selectedTour.name
+            }
+          })
+          .then(() => this.$swal.fire("Book tour successfully.", "Please check your email for the information and perform the payment!", "success"));
       }
     },
   },

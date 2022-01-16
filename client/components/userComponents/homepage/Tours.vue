@@ -55,7 +55,7 @@
           </v-card-subtitle>
 
           <v-card-actions>
-            <NuxtLink to="/" class="text-decoration-none">
+            <NuxtLink :to="`/tours/${tour.id}`" class="text-decoration-none">
               <v-btn color="userColorDarker" text> Explore </v-btn>
             </NuxtLink>
           </v-card-actions>

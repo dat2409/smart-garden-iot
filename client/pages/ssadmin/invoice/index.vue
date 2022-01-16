@@ -102,7 +102,6 @@ export default {
           })
           .then((result) => {
             if (result.isConfirmed) {
-              console.log(invoice.id)
               this.$axios
                 .patch(`/booking-manager/invoices/${invoice.id}`)
                 .then(() => this.$fetch());
@@ -123,7 +122,6 @@ export default {
           })
           .then((result) => {
             if (result.isConfirmed) {
-              console.log(invoice.id)
               this.$axios
                 .patch(`/booking-manager/invoices/${invoice.id}`)
                 .then(() => this.$fetch());

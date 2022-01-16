@@ -15,27 +15,35 @@
       <v-row class="py-16">
         <v-col cols="12" md="7">
           <v-card outlined class="transparent">
-            <v-card-title class="display-2 font-weight-bold">Our Popular Tours</v-card-title>
+            <v-card-title class="display-2 font-weight-bold"
+              >SetSail Tour Travel</v-card-title
+            >
             <v-card-subtitle class="title mt-1 mb-4"
-              >Si elit omnes impedit ius, vel et hinc agam fabulas. Ut audiam
-              invenire iracundia vim. Tn eam dimo diam ea. Piber Korem sit
-              amet.</v-card-subtitle
+              >“Travel is the main thing you purchase that makes you more
+              extravagant”. We, at ‘Organization Name’, swear by this and put
+              stock in satisfying travel dreams that make you perpetually rich
+              constantly.</v-card-subtitle
             >
-            <v-card-text
-              >Al elit omnes impedit ius, vel et hinc agam fabulas. Ut audiam
-              invenire iracundia vim. En eam dico similique, ut sint posse sit,
-              eum sumo diam ea. Liber consectetuer in mei, sea in imperdiet
-              assue verit contentio nes, an his cibo blandit tacimates. Iusto
-              iudi cabit sim ilique id velex, in sea rebum deseruisse
-              appellantur. Etiam rhoncus. Maec enas tempus, tellus eget
-              condimentum rhoncus.Aliquam lorem ante, dapibus in, viverra quis,
-              feugiat</v-card-text
-            >
+            <v-card-text class="body-1"
+              >We have been moving excellent encounters for a considerable
+              length of time through our cutting-edge planned occasion bundles
+              and other fundamental travel administrations. We rouse our clients
+              to carry on with a rich life, brimming with extraordinary travel
+              encounters.
+              <br />
+              Through our exceptionally curated occasion bundles, we need to
+              take you on an adventure where you personally enjoy the stunning
+              magnificence of America and far-off terrains. We need you to
+              observe sensational scenes that are a long way past your creative
+              ability.
+            </v-card-text>
           </v-card>
         </v-col>
         <v-col cols="12" md="5" align="end">
-          <v-avatar size=350>
-            <v-img :src="require('~/assets/images/hoa-sen-about-us.jpg')"></v-img>
+          <v-avatar size="350">
+            <v-img
+              :src="require('~/assets/images/hoa-sen-about-us.jpg')"
+            ></v-img>
           </v-avatar>
         </v-col>
       </v-row>

@@ -143,7 +143,7 @@ export default {
       .then(() => {
         this.$swal.fire('Update profile successfully!', '', 'success');
       })
-    }
+    },
   },
 };
 </script>

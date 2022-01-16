@@ -1,6 +1,5 @@
 <template>
   <v-app dark>
-    <notifications group="foo" />
     <v-main class="adminBackground">
       <admin-nav-bar />
       <v-container>

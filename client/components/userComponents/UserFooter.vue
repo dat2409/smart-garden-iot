@@ -84,7 +84,7 @@ export default {
       socials: [
         { icon: "mdi-twitter", link: "twitter.com/doandat2409/" },
         { icon: "mdi-pinterest", link: "pinterest.com/doandat2409/" },
-        { icon: "mdi-instagram", link: "instagram.com/doandat2409/" },
+        { icon: "mdi-instagram", link: "instagram.com/dat_thaidoan/" },
         { icon: "mdi-facebook", link: "facebook.com/doandat2409/" },
       ],
     };

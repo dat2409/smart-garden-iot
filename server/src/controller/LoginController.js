@@ -41,7 +41,6 @@ class LoginController {
   }
 
   me(req, res, auth) {
-    console.log("davao day");
     res.status(200).json({
       user: loadedUser
     })

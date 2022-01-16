@@ -19,12 +19,14 @@
     <v-app-bar flat class="white" height="80">
       <v-row>
         <v-col cols="12" md="3">
-          <img
-            src="~/assets/images/logo.png"
-            height="48"
-            alt="Logo"
-            class="mt-2"
-          />
+          <NuxtLink to="/">
+            <img
+              src="~/assets/images/logo.png"
+              height="48"
+              alt="Logo"
+              class="mt-2"
+            />
+          </NuxtLink>
         </v-col>
 
         <v-col cols="12" md="6" align-self="center" class="font-weight-bold">
@@ -32,7 +34,6 @@
             <v-list-item-group
               class="d-flex"
               active-class="userColorDarker--text"
-
             >
               <v-list-item
                 v-for="navLink in navLinks"
@@ -42,7 +43,7 @@
                 :to="navLink.to"
               >
                 <v-list-item-content>
-                  <v-list-item-title v-text="navLink.name" align="center"/>
+                  <v-list-item-title v-text="navLink.name" align="center" />
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>

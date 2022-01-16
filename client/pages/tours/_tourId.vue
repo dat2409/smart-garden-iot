@@ -52,6 +52,18 @@
               </v-row>
             </v-container>
           </v-tab-item>
+          <v-tab-item>
+            <v-container>
+              <v-row>
+                <v-col cols="12" md="8">
+                  <tour-reviews />
+                </v-col>
+                <v-col cols="12" md="4">
+                  <form-book-tour />
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-tab-item>
         </v-tabs-items>
       </v-card>
     </v-container>
@@ -60,16 +72,16 @@
 
 <script>
 import FormBookTour from '../../components/userComponents/tours/FormBookTour.vue';
-import Location from '../../components/userComponents/tours/Location.vue';
 import TourInfo from '../../components/userComponents/tours/TourInfo.vue';
 import TourPlan from '../../components/userComponents/tours/TourPlan.vue';
+import TourReviews from '../../components/userComponents/tours/TourReviews.vue';
 
 export default {
   components: {
     TourInfo,
     TourPlan,
-    Location,
-    FormBookTour
+    FormBookTour,
+    TourReviews
   },
   data() {
     return {
@@ -77,7 +89,7 @@ export default {
       tabs: [
         { title: "information", icon: "mdi-file-document-multiple-outline" },
         { title: "tour plan", icon: "mdi-calendar-blank-multiple" },
-        // { title: "location", icon: "mdi-map-marker-outline" },
+        { title: "reviews", icon: "mdi-chat-outline" },
       ],
       tab: null,
     };

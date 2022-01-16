@@ -161,6 +161,7 @@ export default {
               "You've already created new tour!",
               "success"
             );
+            this.$router.push('/ssadmin/tour');
           });
       } catch (error) {
         console.log(error);

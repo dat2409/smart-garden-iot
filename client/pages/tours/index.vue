@@ -39,7 +39,7 @@
             <v-container>
               <v-row>
                 <v-col cols="12" md="9">
-                  <all-tours />
+                  <all-tours :order-by="orderBy.byDestination"/>
                 </v-col>
                 <v-col cols="12" md="3">
                   <search-tour />
@@ -51,7 +51,7 @@
             <v-container>
               <v-row>
                 <v-col cols="12" md="9">
-                  <all-tours />
+                  <all-tours :order-by="orderBy.byPriceAsc" />
                 </v-col>
                 <v-col cols="12" md="3">
                   <search-tour />
@@ -63,7 +63,7 @@
             <v-container>
               <v-row>
                 <v-col cols="12" md="9">
-                  <all-tours />
+                  <all-tours :order-by="orderBy.byPriceDesc" />
                 </v-col>
                 <v-col cols="12" md="3">
                   <search-tour />
@@ -88,11 +88,16 @@ export default {
   data() {
     return {
       tabs: [
-        { title: "all", icon: "mdi-calendar-blank" },
+        { title: "by destination", icon: "mdi-calendar-range" },
         { title: "price low to high", icon: "mdi-upload" },
         { title: "price high to low", icon: "mdi-download" },
       ],
       tab: null,
+      orderBy: {
+        byDestination: '',
+        byPriceAsc: '/price-asc',
+        byPriceDesc: '/price-desc',
+      }
     };
   },
 };
