@@ -1,20 +1,24 @@
 <template>
   <v-app dark>
-    <user-header />
-    <v-main>
-      <Nuxt />
+    <v-main class="adminBackground">
+      <admin-nav-bar />
+      <v-container>
+        <Nuxt />
+      </v-container>
     </v-main>
-    <user-footer />
+    <admin-footer />
   </v-app>
 </template>
 
 <script>
-import UserFooter from "../components/userComponents/UserFooter.vue";
-import UserHeader from "../components/userComponents/UserHeader.vue";
+import AdminFooter from '../components/AdminFooter.vue'
+import AdminNavBar from '../components/AdminNavBar.vue'
+
 export default {
-  name: "default",
+  name: 'admin',
   components: {
-    UserHeader,
-    UserFooter,
-  },
-};
+    AdminFooter,
+    AdminNavBar
+  }
+}
+</script>

@@ -75,7 +75,7 @@ export default {
           login: { url: "/login", method: "post" },
 //        refresh: { url: "/api/auth/refresh-token", method: "post" },
           logout: false, //  we don't have an endpoint for our logout in our API and we just remove the token from local storage
-          user: { url: "/login/me", method: "get" }
+          // user: { url: "/login/me", method: "get" }
         }
       }
     }
@@ -83,7 +83,9 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://localhost:5000',
+    // baseURL: 'http://localhost:8081/api',
+    // baseURL: 'http://localhost:5000',
+    baseURL: 'http://c1a7-2402-800-6136-3199-45b0-3f18-4c93-4829.ngrok.io/api',
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

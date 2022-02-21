@@ -11,17 +11,31 @@ export const getters = {
 };
 
 export const state = () => ({
-  selectedTour: {}
+  selectedTour: {},
+  selectedUser: {},
+  selectedGarden: {},
 })
 
 export const mutations = {
   setSelectedTour(state, selectedTour) {
     state.selectedTour = selectedTour;
-  }
+  },
+  setSelectedUser(state, selectedUser) {
+    state.selectedUser = selectedUser;
+  },
+  setSelectedGarden(state, selectedGarden) {
+    state.selectedGarden = selectedGarden;
+  },
 }
 
 export const actions = {
   setSelectedTour({ commit }, selectedTour) {
     commit('setSelectedTour', selectedTour);
-  }
+  },
+  setSelectedUser({ commit }, selectedUser) {
+    commit('setSelectedUser', selectedUser);
+  },
+  setSelectedGarden({ commit }, selectedGarden) {
+    commit('setSelectedGarden', selectedGarden);
+  },
 }
